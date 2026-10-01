@@ -69,6 +69,26 @@ func TestReadAdhocDependencies(t *testing.T) {
 		opts: ChartifyOpts{
 			AdhocChartDependencies: []ChartDependency{
 				{
+					Alias:     "mydb",
+					Chart:     "./testdata/charts/db",
+					Condition: "global.mydb.enabled",
+				},
+			},
+		},
+		wantDendency: []Dependency{
+			{
+				Repository: "file://./testdata/charts/db",
+				Name:       "db",
+				Alias:      "mydb",
+				Condition:  "global.mydb.enabled",
+			},
+		},
+	})
+
+	run(testcase{
+		opts: ChartifyOpts{
+			AdhocChartDependencies: []ChartDependency{
+				{
 					Chart:   "myrepo/db",
 					Version: "0.1.0",
 				},
